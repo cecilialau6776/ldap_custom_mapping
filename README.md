@@ -8,29 +8,35 @@ A [ColdFront](https://coldfront.readthedocs.io/en/latest/) plugin that extends t
 
 ## Installation
 
-If you're using a virtual environment (following ColdFront's deployment instructions should have you make and use a virtual environment), make sure you're in the virutal environment first.
+If you're using a virtual environment (following ColdFront's deployment instructions should have you make and use a virtual environment), make sure you're in the virutal environment first(`source /srv/coldfront/venv/bin/activate`).
 
 `pip install git+https://github.com/cecilialau6776/ldap_custom_mapping`
 
-## Usage
+To enable this plugin, set the following applicable variables in ColdFront's [local settings](https://coldfront.readthedocs.io/en/latest/config/#configuration-files):
 
-To enable this plugin set the following applicable environment variables:
-
-```env
-PLUGIN_LDAP_USER_SEARCH=True
-LDAP_USER_SEEACH_SERVER_URI=ldap://example.com
-LDAP_USER_SEARCH_BASE="dc=example,dc=com"
-LDAP_USER_SEARCH_BIND_DN="cn=Manager,dc=example,dc=com"
-LDAP_USER_SEARCH_BASE="dc=example,dc=com"
-LDAP_USER_SEARCH_USE_SSL=True
-LDAP_USER_SEARCH_USE_TLS=True
-LDAP_USER_SEARCH_CACERT_FILE=/path/to/cacert
-LDAP_USER_SEARCH_CERT_FILE=/path/to/cert
-LDAP_USER_SEARCH_PRIV_KEY_FILE=/path/to/key
+```py
+# /etc/coldfront/local_settings.py
+INSTALLED_APPS += ["coldfront_plugin_ldap_custom_mapping"]
 ```
 
-For custom attributes, set the Django variable `LDAP_USER_SEARCH_ATTRIBUTE_MAP` in ColdFront's [local settings](https://coldfront.readthedocs.io/en/latest/config/#configuration-files). This dictionary maps from ColdFront User attributes to LDAP attributes:
+## Configuration
+Also in local settings, set the following applicable variables.
 ```py
+# /etc/coldfront/local_settings.py
+LDAP_USER_SEARCH_SERVER_URI = "ldap://example.com"
+LDAP_USER_SEARCH_BASE = "dc=example,dc=com"
+LDAP_USER_SEARCH_BIND_DN = "cn=Manager,dc=example,dc=com"
+LDAP_USER_SEARCH_BASE = "dc=example,dc=com"
+LDAP_USER_SEARCH_USE_SSL = True
+LDAP_USER_SEARCH_USE_TLS = True
+LDAP_USER_SEARCH_CACERT_FILE = "/path/to/cacert"
+LDAP_USER_SEARCH_CERT_FILE = "/path/to/cert"
+LDAP_USER_SEARCH_PRIV_KEY_FILE = "/path/to/key"
+```
+
+For custom attribute mapping, set the Django variable `LDAP_USER_SEARCH_ATTRIBUTE_MAP` in local settings.
+```py
+# /etc/coldfront/local_settings.py
 # default
 LDAP_USER_SEARCH_ATTRIBUTE_MAP = {
     "username": "uid",
@@ -45,6 +51,7 @@ To set a custom mapping, define an `LDAP_USER_SEARCH_MAPPING_CALLBACK` function 
 For example, if your LDAP schema provides a full name and no first and last name attributes, you can define `LDAP_USER_SEARCH_ATTRIBUTE_MAP` and `LDAP_USER_SEARCH_MAPPING_CALLBACK` as follows:
 
 ```py
+# /etc/coldfront/local_settings.py
 LDAP_USER_SEARCH_ATTRIBUTE_MAP = {
     "username": "uid",
     "email": "mail",
