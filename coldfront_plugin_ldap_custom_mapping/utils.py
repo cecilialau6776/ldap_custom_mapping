@@ -9,7 +9,7 @@ from ldap3 import Connection, Server, Tls, get_config_parameter, set_config_para
 logger = logging.getLogger(__name__)
 
 
-class LDAPUserSearch(UserSearch):
+class LDAPCustomMapping(UserSearch):
     search_source = 'LDAP'
 
     def __init__(self, user_search_string, search_by):

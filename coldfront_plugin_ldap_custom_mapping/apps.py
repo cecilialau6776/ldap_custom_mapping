@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class LdapUserSearchConfig(AppConfig):
-    name = "coldfront_plugin_ldap_user_search"
+class LdapCustomMappingConfig(AppConfig):
+    name = "coldfront_plugin_ldap_custom_mapping"
