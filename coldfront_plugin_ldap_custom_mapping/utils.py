@@ -63,6 +63,8 @@ class LDAPCustomMapping(UserSearch):
         attrs = get_config_parameter("ATTRIBUTES_EXCLUDED_FROM_CHECK")
         attrs.extend(ldap_attrs)
         set_config_parameter("ATTRIBUTES_EXCLUDED_FROM_CHECK", attrs)
+        if search_by == 'username_only':
+            search_by = "username"
         if user_search_string and search_by == 'all_fields':
             filter = ldap.filter.filter_format(
                 f"(|({ldap_attrs[0]}=*%s*)({ldap_attrs[1]}=*%s*)({ldap_attrs[2]}=*%s*)({ldap_attrs[3]}=*%s*))",
